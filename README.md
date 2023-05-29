@@ -109,7 +109,7 @@ The usual:
 gem install xeme
 ```
 
-### Using the Xeme gem
+### Basic Xeme concepts
 
 Xeme (the gem) is a thin layer over a hash that implements the Xeme format. (For
 the rest of this document "Xeme" refers to the Ruby class, not the format.)
@@ -138,7 +138,7 @@ xeme['errors'] = []
 xeme['errors'].push({'id'=>'my-error'})
 ```
 
-#### Success and failure
+### Success and failure
 
 Because a xeme isn't considered successful until it has been explicitly declared
 so, a new xeme is considered to indicate failure. However, because there are no
@@ -188,7 +188,7 @@ xeme.try_succeed
 puts xeme.success? # => false
 ```
 
-#### Creating and using messages
+### Creating and using messages
 
 Messages in a xeme provide a way to indicate errors (i.e. fatal errors),
 warnings (non-fatal errors), notes (not an error at all), and promises (guides
@@ -206,12 +206,12 @@ xeme.note 'my-note'
 xeme.promise 'my-promise'
 ```
 
-`error`, `warning`, and `note` each create a message for their own type.
-Although it is not required, it's usually a good idea to give a string as the
-first parameter. That string will be set to the `id` element in the resulting
-hash, as seen in the example above.
+`#error`, `#warning`, `#note`, and `#promise` each create a message for their
+own type. Although it is not required, it's usually a good idea to give a string
+as the first parameter. That string will be set to the `id` element in the
+resulting hash, as seen in the example above.
 
-`errors`, `warnings`, and `notes` return arrays for each type.
+`#errors`, `#warnings`, `#notes`, and `#promises` return arrays for each type.
 
 ```ruby
 xeme.errors.each do |e|
@@ -261,7 +261,39 @@ err['database-error'] = 'some database error'
 err['commands'] = ['a', 'b', 'c']
 ```
 
-#### Nesting xemes
+### Creating metainformation
+
+The `#meta` method returns the `meta` element in the xeme hash, creating it if
+necessary. The hash will be automatically populated with a timestamp and a UUID.
+If you gave the xeme an identifier when you created it, that id will stored in
+the meta hash:
+
+```ruby
+xeme = Xeme.new('my-xeme')
+puts xeme.meta
+```
+
+This produces a `meta` hash like this:
+
+```ruby
+{
+   "uuid"=>"4e736a8f-314e-470a-8209-6811a7b2d38c",
+   "timestamp"=>2023-05-29 19:22:37.26152866 -0400,
+   "id"=>"my-xeme"
+}
+```
+
+If you don't pass in an id then the meta hash isn't created. However, you can
+always create and use the meta hash by calling the `#meta` method. The timestamp
+and UUID will be automatically created.
+
+```ruby
+xeme = Xeme.new
+xeme.meta['foo'] = 'bar'
+xeme.meta.class # => Hash
+```
+
+### Nesting xemes
 
 In complex testing situations it can be useful to nest results within other
 results. To nest a xeme within another xeme, use the `#nest` method:
@@ -332,7 +364,7 @@ puts xeme['errors']
 ```
 
 
-#### Resolving xemes
+### Resolving xemes
 
 A xeme can contain contradictory information. For example, if `success` is true
 but there are errors, then the xeme should be considered as failed. If there are

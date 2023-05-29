@@ -95,7 +95,7 @@ The usual:
 gem install xeme
 ```
 
-### Using the Xeme gem
+### Basic Xeme concepts
 
 Xeme (the gem) is a thin layer over a hash that implements the Xeme format. (For
 the rest of this document "Xeme" refers to the Ruby class, not the format.)
@@ -114,7 +114,7 @@ as if it were a hash.
 
 [import]: {"path": "object/new.rb", "range":"as-hash"}
 
-#### Success and failure
+### Success and failure
 
 Because a xeme isn't considered successful until it has been explicitly declared
 so, a new xeme is considered to indicate failure. However, because there are no
@@ -144,7 +144,7 @@ the xeme to failure.
 
 [import]: {"path": "object/succeed/try.rb", "range":"fail"}
 
-#### Creating and using messages
+### Creating and using messages
 
 Messages in a xeme provide a way to indicate errors (i.e. fatal errors),
 warnings (non-fatal errors), notes (not an error at all), and promises (guides
@@ -156,12 +156,12 @@ note, and a promise.
 
 [import]: {"path": "object/messages/message.rb", "range":"create"}
 
-`error`, `warning`, and `note` each create a message for their own type.
-Although it is not required, it's usually a good idea to give a string as the
-first parameter. That string will be set to the `id` element in the resulting
-hash, as seen in the example above.
+`#error`, `#warning`, `#note`, and `#promise` each create a message for their
+own type. Although it is not required, it's usually a good idea to give a string
+as the first parameter. That string will be set to the `id` element in the
+resulting hash, as seen in the example above.
 
-`errors`, `warnings`, and `notes` return arrays for each type.
+`#errors`, `#warnings`, `#notes`, and `#promises` return arrays for each type.
 
 [import]: {"path": "object/messages/message.rb", "range":"ids"}
 
@@ -186,7 +186,26 @@ assign that return value to a variable and work with the message that way.
 
 [import]: {"path": "object/messages/return.rb", "range":"all"}
 
-#### Nesting xemes
+### Creating metainformation
+
+The `#meta` method returns the `meta` element in the xeme hash, creating it if
+necessary. The hash will be automatically populated with a timestamp and a UUID.
+If you gave the xeme an identifier when you created it, that id will stored in
+the meta hash:
+
+[import]: {"path": "object/meta/meta.rb", "range":"all"}
+
+This produces a `meta` hash like this:
+
+[import]: {"path": "object/meta/results-id.rb"}
+
+If you don't pass in an id then the meta hash isn't created. However, you can
+always create and use the meta hash by calling the `#meta` method. The timestamp
+and UUID will be automatically created.
+
+[import]: {"path": "object/meta/access.rb", "range":"all"}
+
+### Nesting xemes
 
 In complex testing situations it can be useful to nest results within other
 results. To nest a xeme within another xeme, use the `#nest` method:
@@ -223,7 +242,7 @@ the nested xemes, use `#flatten`.
 [import]: {"path": "object/nested/messages.rb", "range":"flatten"}
 
 
-#### Resolving xemes
+### Resolving xemes
 
 A xeme can contain contradictory information. For example, if `success` is true
 but there are errors, then the xeme should be considered as failed. If there are
