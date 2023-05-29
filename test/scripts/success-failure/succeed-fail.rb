@@ -12,13 +12,11 @@ Bryton::Lite::Tests.assert xeme.success?
 xeme = Xeme.new()
 xeme.fail
 Bryton::Lite::Tests.refute xeme.success?
-Bryton::Lite::Tests.assert xeme.failure?
 
 # fail with errors
 xeme = Xeme.new()
-xeme.error
+xeme.error 'my-error'
 Bryton::Lite::Tests.refute xeme.success?
-Bryton::Lite::Tests.assert xeme.failure?
 
 # done
 Bryton::Lite::Tests.done

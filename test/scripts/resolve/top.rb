@@ -6,17 +6,20 @@ require_relative './dir.rb'
 # init
 xeme = Xeme.new
 
-# add errors
-Bryton::Lite::Tests.refute xeme.hsh['errors']
-xeme.error
-Bryton::Lite::Tests.assert xeme.errors.any?
-Bryton::Lite::Tests.assert xeme.failure?
+# success should be nil
 Bryton::Lite::Tests.assert xeme['success'].nil?
+
+# set to success
+xeme.succeed
+Bryton::Lite::Tests.assert xeme['success']
+
+# add error
+xeme.error 'my-error'
 
 # resolve
 xeme.resolve
 
-# should have explicit success=false
+# success should be false
 Bryton::Lite::Tests.assert xeme['success'].is_a?(FalseClass)
 
 # done

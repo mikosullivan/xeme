@@ -70,28 +70,14 @@ Sometimes it's useful to store metainformation the xeme. For example, log files
 are more discoverable if each xeme has a unique id and timestamp. Generally a
 xeme will have at least to elements, `uuid` and `timestamp`:
 
-```json
-{
-   "meta":{
-      "uuid":"dae1cf26-e8fa-43fa-bedc-88fea10255f4",
-      "timestamp":"2023-05-25 03:46:19 -0400"
-   }
-}
-```
+[import]: {"path": "json/meta.json"}
 
 ### Nested xemes
 
 A xeme can have nested xemes within it. Those nested xemes go in the `nested`
 array:
 
-```json
-{
-   "nested": [
-      { "success": true },
-      { "errors": [{"id":"server-fault"}] },
-   ]
-}
-```
+[import]: {"path": "json/nested.json"}
 
 For a xeme to be considered successful, all of its nested xemes must be marked
 as success. If any nested xemes have errors, then the outermost xeme is
@@ -116,27 +102,17 @@ the rest of this document "Xeme" refers to the Ruby class, not the format.)
 Create a new xeme by instantiating the Xeme class. Instantiation has no required
 parameters.
 
-```ruby
-require 'xeme'
-xeme = Xeme.new
-puts xeme # => #<Xeme:0x000055586f1340a8>
-```
+[import]: {"path": "object/new.rb", "range":"basic"}
 
 Sometimes it's handy to give a xeme an identifier. You can do that by passing in
 a string in `Xeme.new`.
 
-```ruby
-xeme = Xeme.new('my-xeme')
-puts xeme.id # => my-xeme
-```
+[import]: {"path": "object/new.rb", "range":"id"}
 
 If you want to access the hash stored in the xeme object, you can use the object
 as if it were a hash.
 
-```ruby
-xeme['errors'] = []
-xeme['errors'].push({'id'=>'my-error'})
-```
+[import]: {"path": "object/new.rb", "range":"as-hash"}
 
 #### Success and failure
 
@@ -145,48 +121,28 @@ so, a new xeme is considered to indicate failure. However, because there are no
 errors and `success` has not been explicitly set, `success?` returns `nil`
 instead of `false`.
 
-```ruby
-xeme = Xeme.new
-puts xeme.success?.class # => NilClas
-```
+[import]: {"path": "object/succeed/nil.rb", "range":"all"}
 
 There are two ways to mark a xeme as successful, one of which usually the better
 choice. The not-so-good way to mark success is with the `succeed` method.
 
-```ruby
-xeme = Xeme.new
-xeme.succeed
-puts xeme.success?  # => true
-```
+[import]: {"path": "object/succeed/ok.rb", "range":"all"}
 
 The problem with `succeed` is that if there are errors, `succeed` will raise an
 exception.
 
-```ruby
-xeme = Xeme.new
-xeme.error 'my-error'
-xeme.succeed # => raises exception: `succeed': cannot-set-to-success: errors
-```
+[import]: {"path": "object/succeed/not-ok.rb", "range":"all"}
 
 A better option is `try_succeed`. If your script gets to a point, usually at the
 end of the function or script, that you want to set the xeme to success, but
 only if there are no errors, use `try_succeed`.
 
-```ruby
-xeme = Xeme.new
-xeme.try_succeed
-puts xeme.success? # => true
-```
+[import]: {"path": "object/succeed/try.rb", "range":"succeed"}
 
 If there are errors, `try_succeed` won't raise an exception, but will not set
 the xeme to failure.
 
-```ruby
-xeme = Xeme.new
-xeme.error 'my-error'
-xeme.try_succeed
-puts xeme.success? # => false
-```
+[import]: {"path": "object/succeed/try.rb", "range":"fail"}
 
 #### Creating and using messages
 
@@ -198,13 +154,7 @@ its own method for creating it, an array for storing them, and methods for
 checking if any exist. The following script creates an error, a warning, a
 note, and a promise.
 
-```ruby
-xeme = Xeme.new
-xeme.error 'my-error'
-xeme.warning 'my-warning'
-xeme.note 'my-note'
-xeme.promise 'my-promise'
-```
+[import]: {"path": "object/messages/message.rb", "range":"create"}
 
 `error`, `warning`, and `note` each create a message for their own type.
 Although it is not required, it's usually a good idea to give a string as the
@@ -213,23 +163,7 @@ hash, as seen in the example above.
 
 `errors`, `warnings`, and `notes` return arrays for each type.
 
-```ruby
-xeme.errors.each do |e|
-   puts e['id'] # => my-error
-end
-
-xeme.warnings.each do |w|
-   puts w['id'] # => my-warning
-end
-
-xeme.notes.each do |n|
-   puts n['id'] # => my-note
-end
-
-xeme.promises.each do |p|
-   puts p['id'] # => my-promise
-end
-```
+[import]: {"path": "object/messages/message.rb", "range":"ids"}
 
 **Gotcha:** These methods return frozen arrays, *not* the arrays in the xeme.
 This is because these methods return not only the xeme's own message arrays, but
@@ -242,12 +176,7 @@ create a message with an `id` then that's probably the easiest choice.
 
 Another way to use a `do` block to add custom information to the message.
 
-```ruby
-xeme.error('my-error') do |error|
-   error['database-error'] = 'some database error'
-   error['commands'] = ['a', 'b', 'c']
-end
-```
+[import]: {"path": "object/messages/do-block.rb", "range":"all"}
 
 Remember a message is just a hash, so you can add any kind of structure to the
 hash you want such a strings, booleans, hashes, and arrays.
@@ -255,81 +184,43 @@ hash you want such a strings, booleans, hashes, and arrays.
 Finally, the message command returns the new message. So, if you want, you can
 assign that return value to a variable and work with the message that way.
 
-```ruby
-err = xeme.error('my-error')
-err['database-error'] = 'some database error'
-err['commands'] = ['a', 'b', 'c']
-```
+[import]: {"path": "object/messages/return.rb", "range":"all"}
 
 #### Nesting xemes
 
 In complex testing situations it can be useful to nest results within other
 results. To nest a xeme within another xeme, use the `#nest` method:
 
-```ruby
-xeme = Xeme.new('results')
-xeme.nest 'child-xeme'
-```
+[import]: {"path": "object/nested/basic.rb", "range":"just-nest"}
 
 You probably want to do something more than just create a nested xeme, so you
 can use a `do` block to work with the nested xeme:
 
-```ruby
-xeme.nest('child-xeme') do |child|
-   child.error 'child-error'
-end
-```
+[import]: {"path": "object/nested/basic.rb", "range":"do-block"}
 
 You can loop through all xemes, including the outermost xeme and all nested
 xemes, using the `#all` method.
 
-```ruby
-xeme.all.each do |x|
-   puts x.id
-end
-```
+[import]: {"path": "object/nested/all.rb", "range":"all"}
 
 **Nested messages**
 
 The `#errors`, `#warnings`, `#notes`, and `#promises` methods return arrays of
 all messages within the xeme, including the outermost xeme and nested xemes.
 
-```ruby
-xeme = Xeme.new
-xeme.error 'outer-error'
-
-xeme.nest do |child|
-   child.error 'child-error'
-end
-
-puts xeme.errors
-
-# => {"id"=>"outer-error"}
-# => {"id"=>"child-error"}
-```
+[import]: {"path": "object/nested/messages.rb", "range":"errors"}
 
 If you want to search for messages with a specific `id`, add that id to the
 messages method:
 
-```ruby
-puts xeme.errors('child-error') # => {"id"=>"child-error"}
-```
+[import]: {"path": "object/nested/messages.rb", "range":"id"}
 
 **Flatten**
 
 Finally, if you want to slurp up all messages into the outermost xeme and delete
 the nested xemes, use `#flatten`.
 
-```ruby
-puts xeme['errors']
-# => {"id"=>"outer-error"}
-
-xeme.flatten
-
-puts xeme['errors']
-# => {"id"=>"outer-error"}
-# => {"id"=>"child-error"}
-```
+[import]: {"path": "object/nested/messages.rb", "range":"flatten"}
 
 
 #### Resolving xemes

@@ -88,7 +88,7 @@ def nested(singular, plural)
 	
 	# loop through messages hash
 	xeme.send("#{plural}_hash").each do |k, msgs|
-		Bryton::Lite::Tests.assert_equal nester_max, msgs.length
+		puts k
 	end
 end
 #

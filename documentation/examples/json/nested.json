@@ -1,0 +1,6 @@
+{
+	"nested": [
+		{ "success": true },
+		{ "errors": [{"id":"server-fault"}] },
+	]
+}

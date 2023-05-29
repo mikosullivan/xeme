@@ -3,23 +3,16 @@ require_relative './dir.rb'
 
 # Tests xeme.resolve on a xeme with nested children.
 
-# init
-xeme = Xeme.new
-
-# nest
-xeme.nest() do |child|
-	child.nest() do |grandchild|
-		grandchild.error
-	end
-end
+# get food xeme
+food = food_tree()
 
 # resolve
-xeme.resolve
+food.resolve
 
-# should have explicit success=false
-Bryton::Lite::Tests.assert xeme['success'].is_a?(FalseClass)
-Bryton::Lite::Tests.assert xeme.nested[0]['success'].is_a?(FalseClass)
-Bryton::Lite::Tests.assert xeme.nested[0].nested[0]['success'].is_a?(FalseClass)
+# test each xeme's success against its expected resolved value
+food.all.each do |xeme|
+	Bryton::Lite::Tests.assert_equal xeme['success'], xeme.resolved
+end
 
 # done
 Bryton::Lite::Tests.done

@@ -4,16 +4,13 @@ require_relative './dir.rb'
 # Tests xeme.all.
 
 # init
-xeme = Xeme.new
+xeme = nester()
 
-# nest
-xeme.nest() do |child|
-	child.nest() do |grandchild|
-	end
-end
+# all should return a frozen array
+Bryton::Lite::Tests.assert xeme.all.frozen?
 
 # should have three xemes
-Bryton::Lite::Tests.assert_equal 3, xeme.all.length
+Bryton::Lite::Tests.assert_equal nester_max(), xeme.all.length
 
 # done
 Bryton::Lite::Tests.done

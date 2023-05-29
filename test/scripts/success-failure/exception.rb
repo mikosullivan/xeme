@@ -3,7 +3,7 @@ require_relative './dir.rb'
 
 # fail to succeed
 xeme = Xeme.new()
-xeme.error
+xeme.error 'my-error'
 
 # attempt at success should raise exception
 Bryton::Lite::Tests.exception do
