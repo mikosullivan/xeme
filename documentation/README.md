@@ -258,8 +258,8 @@ considerations. Resolution never changes a `success` of false.
 * If any nested xemes have `success` explicitly set to false, then the outermost
 xeme will be set to false.
 
-* If a xeme has errors, or any of it's nested xemes has errors, then it is set
-to false.
+* If a xeme has errors, or any of its nested xemes has errors, then it is set to
+false.
 
 * If a xeme has promises, or any of its nested xemes do, then it cannot be set
 to true. If it is already false, then it stays false. Otherwise `success` is set
@@ -287,3 +287,5 @@ mike@idocs.com
 |---------|--------------|-------------------------------|
 | 0.1     | Jan 7, 2020  | Initial upload.               |
 | 1.0     | May 29, 2023 | Complete overhaul. Not backward compatible. |
+| 1.1     | May 29, 2023 | Added and cleaned up documentation. No change to funcationality. |
+| 1.2     | May 29, 2023 | More cleanup to documentation. |

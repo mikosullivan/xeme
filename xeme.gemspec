@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
 	spec.name        = 'xeme'
-	spec.version     = '1.0'
+	spec.version     = '1.2'
 	spec.date        = '2023-05-29'
 	spec.summary     = 'Xeme'
 	spec.description = 'Standard structrure for reporting results of an operation.'
