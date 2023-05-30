@@ -7,7 +7,7 @@ xeme.nest 'child-xeme'
 
 ## {"start":"all"}
 xeme.all.each do |x|
-	puts x.id
+  puts x.id
 end
 ## {"end":"all"}
 

@@ -7,7 +7,7 @@ xeme.error 'my-error'
 
 # attempt at success should raise exception
 Bryton::Lite::Tests.exception do
-	xeme.succeed
+  xeme.succeed
 end
 
 # done

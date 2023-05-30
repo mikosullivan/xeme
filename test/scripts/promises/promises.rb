@@ -8,9 +8,9 @@ food = food_tree()
 
 # loop through xemes checking promises
 food.all.each do |xeme|
-	if xeme.promised.sum > 0
-		Bryton::Lite::Tests.assert_equal xeme.promised.sum, xeme.promises.length
-	end
+  if xeme.promised.sum > 0
+    Bryton::Lite::Tests.assert_equal xeme.promised.sum, xeme.promises.length
+  end
 end
 
 # done

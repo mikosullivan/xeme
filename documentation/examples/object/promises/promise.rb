@@ -6,8 +6,8 @@ require 'xeme'
 xeme = Xeme.new
 
 xeme.promise('my-promise') do |promise|
-	promise['uri'] = 'https://example.com/4325rsa'
-	puts promise # => {"id"=>"my-promise", "uri"=>"https://example.com/4325rsa"}
+  promise['uri'] = 'https://example.com/4325rsa'
+  puts promise # => {"id"=>"my-promise", "uri"=>"https://example.com/4325rsa"}
 end
 
 puts xeme.promises.length # => 1
@@ -22,7 +22,7 @@ xeme = Xeme.new
 xeme.promise 'top-promise'
 
 xeme.nest() do |child|
-	child.promise 'child-promise'
+  child.promise 'child-promise'
 end
 
 puts xeme.promises.length # => 2
