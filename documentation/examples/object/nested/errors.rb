@@ -6,7 +6,7 @@ require 'xeme'
 xeme = Xeme.new
 
 xeme.nest() do |child|
-	child.error 'error-1'
+  child.error 'error-1'
 end
 
 xeme.try_succeed

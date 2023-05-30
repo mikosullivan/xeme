@@ -14,19 +14,19 @@ TTM.hr
 
 ## {"start":"ids"}
 xeme.errors.each do |e|
-	puts e['id'] # => my-error
+  puts e['id'] # => my-error
 end
 
 xeme.warnings.each do |w|
-	puts w['id'] # => my-warning
+  puts w['id'] # => my-warning
 end
 
 xeme.notes.each do |n|
-	puts n['id'] # => my-note
+  puts n['id'] # => my-note
 end
 
 xeme.promises.each do |p|
-	puts p['id'] # => my-promise
+  puts p['id'] # => my-promise
 end
 ## {"end":"ids"}
 

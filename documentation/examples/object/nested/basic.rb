@@ -12,7 +12,7 @@ xeme = Xeme.new('results')
 
 ## {"start":"do-block"}
 xeme.nest('child-xeme') do |child|
-	child.error 'child-error'
+  child.error 'child-error'
 end
 ## {"end":"do-block"}
 

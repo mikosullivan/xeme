@@ -11,11 +11,11 @@ food = food_tree
 
 # TESTING
 # food.all.each do |xeme|
-# 	msg_keys.each do |k|
-# 		if xeme[k]
-# 			puts xeme[k].length
-# 		end
-# 	end
+#   msg_keys.each do |k|
+#     if xeme[k]
+#       puts xeme[k].length
+#     end
+#   end
 # end
 
 # declutter
@@ -23,11 +23,11 @@ food.declutter
 
 # should not have any empty arrays
 food.all.each do |xeme|
-	msg_keys.each do |k|
-		if xeme[k]
-			Bryton::Lite::Tests.assert xeme[k].any?
-		end
-	end
+  msg_keys.each do |k|
+    if xeme[k]
+      Bryton::Lite::Tests.assert xeme[k].any?
+    end
+  end
 end
 
 # done

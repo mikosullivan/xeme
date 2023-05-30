@@ -11,7 +11,7 @@ food.resolve
 
 # test each xeme's success against its expected resolved value
 food.all.each do |xeme|
-	Bryton::Lite::Tests.assert_equal xeme['success'], xeme.resolved
+  Bryton::Lite::Tests.assert_equal xeme['success'], xeme.resolved
 end
 
 # done

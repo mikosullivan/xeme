@@ -7,7 +7,7 @@ xeme = Xeme.new
 xeme.error 'outer-error'
 
 xeme.nest do |child|
-	child.error 'child-error'
+  child.error 'child-error'
 end
 
 puts xeme.errors
