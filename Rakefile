@@ -1,8 +1,17 @@
-require 'rake/testtask'
+require 'minitest/test_task'
 
-Rake::TestTask.new do |t|
-	t.libs << 'test'
+Minitest::TestTask.create(:test) do |t|
+  t.libs << 'test'
+  
+  # select files that implement MiniTest
+  Dir.glob('./test/scripts/**/*.rb').each do |rb|
+      lines = File.read(rb).lines
+      lines = lines.select{|l| l.match(/\< Minitest\:\:Test/mu)}
+      
+      if lines.any?
+          t.test_globs << rb
+      end
+  end
 end
 
-desc 'Run tests'
 task :default => :test

@@ -1,33 +1,50 @@
-#!/usr/bin/ruby -w
-require_relative './dir.rb'
+require 'helper'
 
-# Tests xeme.meta
+# Tests Xeme#meta param, Xeme#init_meta, Xeme#init_timestamp, Xeme#init_uuid
 
-# init
-xeme = Xeme.new
-
-# add meta information
-xeme.meta
-
-# test meta elements
-Bryton::Lite::Tests.assert xeme.meta.is_a?(Hash)
-
-# test uuid
-Bryton::Lite::Tests.assert xeme.meta['uuid'].match(/\A[a-z0-9]{8}(\-[a-z0-9]{4}){3}\-[a-z0-9]{11}/mu)
-Bryton::Lite::Tests.assert xeme.uuid.match(/\A[a-z0-9]{8}(\-[a-z0-9]{4}){3}\-[a-z0-9]{11}/mu)
-
-# timestamp should be valid time
-Bryton::Lite::Tests.assert xeme['meta']['timestamp'].is_a?(Time)
-Bryton::Lite::Tests.assert xeme.timestamp.is_a?(Time)
-
-# id should be nil
-Bryton::Lite::Tests.assert xeme['meta']['id'].nil?
-Bryton::Lite::Tests.assert xeme.id.nil?
-
-# set id
-xeme.id = 'my-id'
-Bryton::Lite::Tests.assert_equal 'my-id', xeme['meta']['id']
-Bryton::Lite::Tests.assert_equal 'my-id', xeme.id
-
-# done
-Bryton::Lite::Tests.done
+class XemeTestMeta < Minitest::Test
+  # Xeme#meta
+  def test_meta
+    xeme = Xeme.new
+    assert_nil xeme['meta']
+    xeme.meta
+    assert_instance_of Hash, xeme['meta']
+  end
+  
+  # init_uuid
+  def test_init_uuid
+    xeme = Xeme.new
+    xeme.init_uuid
+  end
+  
+  # init_timestamp
+  def test_init_timestamp
+    xeme = Xeme.new
+    xeme.init_timestamp
+    assert_instance_of DateTime, xeme['meta']['timestamp']
+  end
+  
+  # init_meta
+  def test_init_meta
+    xeme = Xeme.new
+    xeme.init_meta
+    assert_instance_of DateTime, xeme['meta']['timestamp']
+    assert_instance_of String, xeme['meta']['uuid']
+  end
+  
+  # accessors
+  def test_accessors
+    xeme = Xeme.new
+    assert_nil xeme.timestamp
+    assert_nil xeme.uuid
+    
+    xeme = Xeme.new
+    xeme.init_meta
+    assert_instance_of DateTime, xeme.timestamp
+    assert_instance_of String, xeme.uuid
+    
+    xeme = Xeme.new
+    xeme.id = 'whatever'
+    assert_equal 'whatever', xeme.id
+  end
+end

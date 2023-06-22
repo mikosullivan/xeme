@@ -1,7 +1,22 @@
 #!/usr/bin/ruby -w
-require_relative './dir.rb'
+require_relative '../../helper.rb'
+require 'tatum/stdout'
 
-exp = (0..2).to_a
-act = [0, 1, 2]
+top = Xeme::Nester.create()
+puts top.warnings.length
+puts top.notes.length
 
-puts exp == act
+selected = top.advisories
+puts selected.length
+
+classes = {}
+
+selected.each do |xeme|
+  classes[xeme.class] = true
+end
+
+TTM.show classes.keys
+
+
+# done
+puts '[done]'

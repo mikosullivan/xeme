@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "timestamp": "2023-06-21T18:42:35-04:00",
+    "uuid": "c76864bc-ff9b-4741-b88c-3d84419b3068"
+  },
+  "success": false,
+  "nested": [
+    {
+      "success": false,
+      "meta": {
+        "timestamp": "2023-06-21T18:42:35-04:00",
+        "uuid": "68216c05-448f-41bb-bb2c-83e0127ac19e"
+      }
+    },
+    {
+      "success": true,
+      "meta": {
+        "timestamp": "2023-06-21T18:42:35-04:00",
+        "uuid": "a9538ff5-4d55-42d7-b0b1-aa4f56b5d7ac"
+      }
+    },
+    {
+      "type": "warning",
+      "meta": {
+        "timestamp": "2023-06-21T18:42:35-04:00",
+        "uuid": "9d1b5c6c-b483-477a-9849-ed996a0a875e"
+      }
+    },
+    {
+      "type": "note",
+      "meta": {
+        "timestamp": "2023-06-21T18:42:35-04:00",
+        "uuid": "f3d268a4-1a0d-4cde-9555-3dfb96c5f258"
+      }
+    },
+    {
+      "type": "promise",
+      "meta": {
+        "timestamp": "2023-06-21T18:42:35-04:00",
+        "uuid": "7aabf879-0136-4941-9250-27be20923e36"
+      }
+    }
+  ]
+}

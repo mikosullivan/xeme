@@ -282,19 +282,12 @@ the rest of this document "Xeme" refers to the Ruby class, not the format.)
 Create a new xeme by instantiating the Xeme class. Instantiation has no required
 parameters.
 
-```ruby
-require 'xeme'
-xeme = Xeme.new
-puts xeme # => #<Xeme:0x000055586f1340a8>
-```
+[import]: {"path": "object/new.rb", "range":"basic"}
 
 If you want to access the hash stored in the xeme object, you can use the object
 as if it were a hash.
 
-```ruby
-xeme['errors'] = []
-xeme['errors'].push({'id'=>'my-error'})
-```
+[import]: {"path": "object/new.rb", "range":"as-hash"}
 
 ### Success and failure
 
@@ -302,18 +295,11 @@ Because a xeme isn't considered successful until it has been explicitly declared
 so, a new xeme is considered to indicate failure or lack of determination of
 success/failure.
 
-```ruby
-xeme = Xeme.new
-puts xeme.success?.class # => NilClas
-```
+[import]: {"path": "object/succeed/nil.rb", "range":"all"}
 
 To set a xeme to indicate failure, use the `fail` method.
 
-```ruby
-xeme = Xeme.new
-xeme.fail
-puts xeme.success? # => false
-```
+[import]: {"path": "object/succeed/fail.rb", "range":"fail"}
 
 Perhaps counter-intuitively, there is no `succeed` method. That's because a xeme
 cannot be reliably marked as succeeding without checking nested xemes (see
@@ -324,139 +310,54 @@ resolves the xeme and its descendents, only marking the xeme as successful if
 resolution allows. We'll get more into handling nested xemes later. The
 following example shows setting a single xeme to success using `try_succeed`.
 
-```ruby
-xeme = Xeme.new
-xeme.try_succeed
-puts xeme.success? # => true
-```
+[import]: {"path": "object/succeed/try.rb", "range":"succeed"}
 
 `try_succeed` will only set a xeme to success if the current success is null or
 true. It will not override an explicit setting of false.
 
-```ruby
-xeme = Xeme.new
-xeme.fail
-xeme.try_succeed
-puts xeme.success? # => false
-```
+[import]: {"path": "object/succeed/try.rb", "range":"fail"}
 
 ### Nesting xemes
 
 Use `nest` to create nested xemes. If a block is sent, `nest` yields the new
 xeme.
 
-```ruby
-xeme.nest() do |child|
-  # do stuff with nested xeme
-end
-```
+[import]: {"path": "object/nested/basic.rb", "range":"do-block"}
 
 `nest` also returns the new xeme.
 
-```ruby
-child = xeme.nest()
-```
+[import]: {"path": "object/nested/basic.rb", "range":"return"}
 
 Several methods exist to provide shortcuts for creating nested xemes of various
 types: `success`, `error`, `warning`, `note`, and `promise`.
 
-```ruby
-xeme.success() do |child|
-  puts child.success? # => true
-end
-
-xeme.error() do |child|
-  puts child.success? # => false
-end
-
-# Xeme#failure does same thing as Xeme#error
-xeme.failure() do |child|
-  puts child.success? # => false
-end
-
-xeme.warning() do |child|
-  puts child.class # => Xeme::Warning
-end
-
-xeme.note() do |child|
-  puts child.class # => Xeme::Note
-end
-
-xeme.promise() do |child|
-  puts child.class # => Xeme::Promise
-end
-```
+[import]: {"path": "object/nested/types.rb", "range":"all"}
 
 #### Querying nested xemes
 
 Xeme provides several methods for traversing through a stack of nested xemes. In
 the following examples, we'll use this structure:
 
-```ruby
-xeme = Xeme.new()
-xeme.id = 'top'
-
-xeme.nest() do |child|
-  child.id = 'foo'
-  
-  child.nest() do |grandchild|
-    grandchild.id = 'bar'
-    grandchild.warning.id = 'my-warning'
-    grandchild.promise.id = 'my-promise'
-    grandchild.success
-  end
-  
-  child.error.id = 'my-error'
-  child.note.id = 'my-note'
-end
-```
+[import]: {"path": "object/nested/all.rb", "range":"setup"}
 
 The simplest is the `all` method, which returns the xeme itself and all nested
 xemes as a locked array.
 
-```ruby
-xeme.all.each do |x|
-   puts x.id
-end
-
-# => top
-# => foo
-# => bar
-# => my-warning
-# => my-promise
-# => my-error
-# => my-note
-```
+[import]: {"path": "object/nested/all.rb", "range":"all"}
 
 There are several methods for selecting xemes based on their success status.
 
-```ruby
-# xemes marked as success=false
-puts xeme.errors.length # => 3
-
-# xemes marked as success=true
-puts xeme.successes.length # => 1
-
-# xemes marked as success=null
-# does not return advisory xemes
-puts xeme.nils.length # => 2
-```
+[import]: {"path": "object/nested/all.rb", "range":"statuses"}
 
 There are also several methods for selecting specific xemes based on their types.
 
-```ruby
-puts xeme.warnings.length # => 1
-puts xeme.notes.length # => 2
-puts xeme.promises.length # => 1
-```
+[import]: {"path": "object/nested/all.rb", "range":"types"}
 
 ### resolve() and try_succeed()
 
 Xemes can be [resolved](#resolution) using the `resolve` method.
 
-```ruby
-xeme.resolve
-```
+[import]: {"path": "object/resolve/resolve.rb", "range":"resolve"}
 
 It's common that your process will get to a point, typically at the end of the
 script, where you want to mark the process as successful, but only if there were
@@ -464,10 +365,7 @@ no errors. Use `try_succeed` for that. That method first resolves the xeme and
 its descendents, then marks the xeme (and descendents) as successful if there
 are no errors.
 
-```ruby
-xeme.try_succeed
-puts xeme.success? # => true, false, or nil
-```
+[import]: {"path": "object/resolve/resolve.rb", "range":"try"}
 
 ## The name
 

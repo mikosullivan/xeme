@@ -1,0 +1,11 @@
+classes
+  xeme
+  warning
+  success
+  note
+  error
+  promise
+  
+  advisory
+  pending
+    resolved
