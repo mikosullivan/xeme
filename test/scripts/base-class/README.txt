@@ -1,1 +1,0 @@
-Scripts in this directory test the Xeme class and instances of it.
